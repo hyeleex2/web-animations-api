@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .box {
+        width: 100px;
+        height: 100px;
+        background: coral;
+        transition: transform 1s, background 2s 1s linear;
+      }
+      .box-action {
+        transform: translateX(300px);
+        background: blue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="box"></div>
+    <p class="message"></p>
+    <script>
+      // transition 관련 이벤트
+      // transitionstart;
+      // transitionend;
+      // transitionrun : 발동 상태에 시작됨;
+      // transitioncancel;
+
+      // run - start - end 순서로 발생
+
+      const box = document.querySelector(".box");
+      const message = document.querySelector(".message");
+      let isTransitionRunning = false;
+
+      box.addEventListener("click", () => {
+        if (!isTransitionRunning) {
+          box.classList.toggle("box-action");
+        }
+        isTransitionRunning = true;
+
+        // cancel 테스트
+        setTimeout(() => {
+          box.remove();
+        }, 500);
+      });
+
+      box.addEventListener("transitionstart", (e) => {
+        message.innerText = "START";
+      });
+
+      box.addEventListener("transitionrun", (e) => {
+        console.log(e);
+      });
+
+      box.addEventListener("transitionend", (e) => {
+        message.innerText = "END";
+        isTransitionRunning = false;
+      });
+
+      // transition 이 걸린 element 객체가 사라졌을 때 트리거됨
+      box.addEventListener("transitioncancel", (e) => {
+        message.innerText = "CANCEL";
+      });
+    </script>
+  </body>
+</html>
